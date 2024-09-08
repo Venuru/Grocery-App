@@ -1,7 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_app/components/app_logo.dart';
+import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/screens/auth/signup.dart';
-import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -32,23 +33,15 @@ class _SpalshScreenState extends State<SpalshScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FadeInDown(
-              child: Image.asset(
-                AppAssets.getImgName("logo.png"),
-                width: 331,
-                height: 225,
-                fit: BoxFit.fill,
-              ),
+              child: const AppLogo(width: 331.0, height: 225.0,)
             ),
             const SizedBox(height: 72),
             FadeInUp(
-              child: const Text(
+              child: const CustomText(
                 'Shop Your Daily\nNecessary',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor
-                ),
+                fontSize: 30,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primaryColor,
               ),
             )
           ],
@@ -57,3 +50,4 @@ class _SpalshScreenState extends State<SpalshScreen> {
     );
   }
 }
+
