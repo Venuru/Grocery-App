@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   animate_do: ^3.3.4
   flutter_svg: ^2.0.10+1
+  logger: ^2.4.0
 
 dev_dependencies:
   flutter_test:

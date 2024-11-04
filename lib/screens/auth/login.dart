@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/components/app_logo.dart';
 import 'package:grocery_app/components/custom_back_button.dart';
@@ -7,6 +8,7 @@ import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/components/custom_textfield.dart';
 import 'package:grocery_app/screens/auth/forgot_password.dart';
+import 'package:grocery_app/screens/main/main_screen.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 
@@ -65,7 +67,9 @@ class _LoginState extends State<Login> {
                 const SizedBox(height: 24.0,),
                 CustomButton(
                   text: 'Login', 
-                  onTap: () {}
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen() ));
+                  }
                 ),
                 const SizedBox(height: 23.0,),
                 const CustomText(
