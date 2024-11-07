@@ -11,6 +11,7 @@ import 'package:grocery_app/screens/auth/forgot_password.dart';
 import 'package:grocery_app/screens/main/main_screen.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:grocery_app/utils/helpers/helpers.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -56,7 +57,7 @@ class _LoginState extends State<Login> {
                   alignment: Alignment.centerRight,
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword()));
+                      Helpers.navigateTo(context, const ForgotPassword());
                     },
                     child: const CustomText(
                       'Forgot your password?',
@@ -68,7 +69,7 @@ class _LoginState extends State<Login> {
                 CustomButton(
                   text: 'Login', 
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen() ));
+                    Helpers.navigateTo(context, const MainScreen());
                   }
                 ),
                 const SizedBox(height: 23.0,),

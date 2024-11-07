@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/utils/constants/app_colors.dart';
 
 class CustomBackButton extends StatelessWidget {
   const CustomBackButton({
@@ -8,6 +9,7 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      color: Colors.white,
       onPressed: () {
         Navigator.of(context).pop();
       }, 

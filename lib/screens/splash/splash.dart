@@ -42,6 +42,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
                 fontSize: 30,
                 fontWeight: FontWeight.w500,
                 color: AppColors.primaryColor,
+                textAlign: TextAlign.center,
               ),
             )
           ],
