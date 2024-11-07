@@ -17,40 +17,42 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SvgPicture.asset(
-                  AppAssets.getIconName(
-                    "menu-icon.svg"
-                  )
-                ),
-                SvgPicture.asset(
-                  AppAssets.getIconName(
-                    "cart-icon.svg"
-                  )
-                ),
-              ],
-            ),
-            const SizedBox(height: 25.0),
-            const CustomText(
-              "Vegetable",
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: AppColors.primaryColor,
-            ),
-            const SizedBox(height: 41.0,),
-    
-            // Product Grid
-            const ProductGrid()
-          ],
-        ),
-      )
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SvgPicture.asset(
+                    AppAssets.getIconName(
+                      "menu-icon.svg"
+                    )
+                  ),
+                  SvgPicture.asset(
+                    AppAssets.getIconName(
+                      "cart-icon.svg"
+                    )
+                  ),
+                ],
+              ),
+              const SizedBox(height: 25.0),
+              const CustomText(
+                "Vegetable",
+                fontSize: 20.0,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryColor,
+              ),
+              const SizedBox(height: 41.0,),
+      
+              // Product Grid
+              const ProductGrid()
+            ],
+          ),
+        )
+      ),
     );
   }
 }
