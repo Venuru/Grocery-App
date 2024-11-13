@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
+import 'package:grocery_app/utils/constants/app_assets.dart';
+import 'package:grocery_app/utils/constants/app_colors.dart';
 
 class BottomSection extends StatelessWidget {
   const BottomSection({
@@ -40,8 +42,62 @@ class BottomSection extends StatelessWidget {
           CustomButton(
             text: "Place Order", 
             onTap: () {
-              
-            })
+              showDialog(
+                context: context, 
+                builder: (context) {
+                  return const DialogBoxContainer();
+                },
+              );
+            }
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class DialogBoxContainer extends StatelessWidget {
+  const DialogBoxContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Stack(
+        alignment: Alignment.center,
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            height: 361.0,
+            width: 300.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0)
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  AppAssets.getImgName("dialog-img.png")
+                ),
+                const SizedBox(height: 30.0,),
+                const CustomText(
+                  "Thanks for Buying\nFrom Us!",
+                  fontSize: 20.0,
+                  color: AppColors.darkGreen,
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            bottom:-23,
+            child: CustomButton(
+              text: "See your order",
+              btnWidth: 200.0,
+              onTap: () {}
+            ),
+          )
         ],
       ),
     );

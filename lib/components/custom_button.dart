@@ -7,17 +7,19 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onTap,
+    this.btnWidth = 259.0,
   });
 
   final String text;
   final Function() onTap; 
+  final double btnWidth;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 259.0,
+        width: btnWidth,
         height: 50.0,
         alignment: Alignment.center,
         decoration: BoxDecoration(
