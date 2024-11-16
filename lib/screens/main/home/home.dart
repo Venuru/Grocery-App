@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
                   ),
                   InkWell(
                     onTap: () {
-                      Helpers.navigateTo(context, Cart());
+                      Helpers.navigateTo(context, const Cart());
                     },
                     child: SvgPicture.asset(
                       AppAssets.getIconName(
