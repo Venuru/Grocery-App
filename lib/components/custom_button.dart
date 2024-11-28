@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 
@@ -8,16 +9,18 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.btnWidth = 259.0,
+    this.isLoading = false,
   });
 
   final String text;
   final Function() onTap; 
   final double btnWidth;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       child: Container(
         width: btnWidth,
         height: 50.0,
@@ -33,11 +36,16 @@ class CustomButton extends StatelessWidget {
             )
           ]
         ),
-        child: CustomText(
-          text,
-          fontSize: 18.0,
-          color: Colors.white,
-        ),
+        child: isLoading
+          ? const SpinKitThreeBounce(
+            color: AppColors.white,
+            size: 20.0,
+          ) 
+          : CustomText(
+            text,
+            fontSize: 18.0,
+            color: Colors.white,
+          ),
       ),
     );
   }

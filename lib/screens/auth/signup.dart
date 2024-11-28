@@ -4,8 +4,10 @@ import 'package:grocery_app/components/app_logo.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/components/custom_textfield.dart';
+import 'package:grocery_app/providers/auth_providers.dart';
 import 'package:grocery_app/screens/auth/login.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -38,11 +40,24 @@ class _SignupState extends State<Signup> {
                   child: const AppLogo(),
                 ),
                 const SizedBox(height: 30.0,),
-                const CustomTextField(hintText: "Enter your name here", labelText: "Name"),
+                CustomTextField(
+                  hintText: "Enter your name here", 
+                  labelText: "Name",
+                  controller: Provider.of<AuthProviders>(context).name,
+                ),
                 const SizedBox(height: 7.0,),
-                const CustomTextField(hintText: "Enter your email here", labelText: "Email"),
+                CustomTextField(
+                  hintText: "Enter your email here", 
+                  labelText: "Email",
+                  controller: Provider.of<AuthProviders>(context).email,
+                ),
                 const SizedBox(height: 7.0,),
-                const CustomTextField(hintText: "Enter your password here", labelText: "Password", isObsecure: true,),
+                CustomTextField(
+                  hintText: "Enter your password here", 
+                  labelText: "Password", 
+                  isObsecure: true,
+                  controller: Provider.of<AuthProviders>(context).password,
+                ),
                 const SizedBox(height: 12.0,),
                 Align(
                   alignment: Alignment.centerRight,
@@ -57,9 +72,16 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 const SizedBox(height: 24.0,),
-                CustomButton(
-                  text: "SignUp",
-                  onTap: () {},
+                Consumer<AuthProviders>(
+                  builder: (context, value, child) {
+                    return CustomButton(
+                      isLoading: value.isLoading,
+                      text: "SignUp",
+                      onTap: () {
+                        value.startSingup(context);
+                      },
+                    );
+                  },
                 )
               ],
             ),
@@ -69,4 +91,3 @@ class _SignupState extends State<Signup> {
     );
   }
 }
-

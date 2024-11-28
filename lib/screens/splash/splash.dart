@@ -2,8 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/components/app_logo.dart';
 import 'package:grocery_app/components/custom_text.dart';
+import 'package:grocery_app/providers/auth_providers.dart';
 import 'package:grocery_app/screens/auth/signup.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:grocery_app/utils/helpers/helpers.dart';
+import 'package:provider/provider.dart';
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({super.key});
@@ -20,7 +23,8 @@ class _SpalshScreenState extends State<SpalshScreen> {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const Signup()));
+        // Helpers.navigateTo(context, Signup());
+        Provider.of<AuthProviders>(context, listen: false).initializeUser(context);
       }
     );
     super.initState();

@@ -11,7 +11,9 @@ import 'package:grocery_app/screens/auth/forgot_password.dart';
 import 'package:grocery_app/screens/main/main_screen.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:grocery_app/utils/helpers/alert_helper.dart';
 import 'package:grocery_app/utils/helpers/helpers.dart';
+import 'package:logger/logger.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -21,6 +23,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  // email textField controller
+  final TextEditingController _email = TextEditingController();
+
+  // email textField controller
+  final TextEditingController _password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +57,18 @@ class _LoginState extends State<Login> {
                   child: const AppLogo(),
                 ),
                 const SizedBox(height: 30.0,),
-                const CustomTextField(hintText: "Enter your email here", labelText: "Email"),
+                CustomTextField(
+                  hintText: "Enter your email here", 
+                  labelText: "Email", 
+                  controller: _email,
+                ),
                 const SizedBox(height: 7.0,),
-                const CustomTextField(hintText: "Enter your password here", labelText: "Password", isObsecure: true,),
+                CustomTextField(
+                  hintText: "Enter your password here", 
+                  labelText: "Password", 
+                  isObsecure: true,
+                  controller: _password,
+                ),
                 const SizedBox(height: 12.0,),
                 Align(
                   alignment: Alignment.centerRight,
@@ -69,7 +86,9 @@ class _LoginState extends State<Login> {
                 CustomButton(
                   text: 'Login', 
                   onTap: () {
-                    Helpers.navigateTo(context, const MainScreen());
+                    if (validateFields()) {
+                      
+                    }
                   }
                 ),
                 const SizedBox(height: 23.0,),
@@ -93,6 +112,26 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+   bool validateFields() {
+    // first checking if all the textfileds are empty or not
+    if (_email.text.isEmpty || _password.text.isEmpty) {
+      Logger().w("Please fill all the fields");
+      AlertHelper.showAlert(context, "Validation Error", "Please fill all the fields");
+      return false;
+    }else if (!_email.text.contains("@")) {
+      Logger().w("Please enter a valid email");
+      AlertHelper.showAlert(context, "Validation Error", "Please enter a valid email");
+      return false;
+    }else if (_password.text.length < 6) {
+      Logger().w("The passwrod must have more than 6 digits");
+      AlertHelper.showAlert(context, "Validation Error", "The passwrod must have more than 6 digits");
+      return false;
+    }else {
+      Logger().w("All fields are validated");
+      return true;
+    }
   }
 }
 

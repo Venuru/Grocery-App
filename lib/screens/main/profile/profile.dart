@@ -2,8 +2,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
+import 'package:grocery_app/providers/auth_providers.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -53,7 +55,9 @@ class _ProfileState extends State<Profile> {
                 ),
                 CustomButton(
                   text: "Logout", 
-                  onTap: () {}
+                  onTap: () {
+                    Provider.of<AuthProviders>(context, listen: false).logOut();
+                  }
                 )
               ],
             ),
