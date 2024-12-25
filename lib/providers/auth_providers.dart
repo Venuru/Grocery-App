@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/controllers/auth_controller.dart';
@@ -69,8 +68,16 @@ class AuthProviders extends ChangeNotifier {
         // start the loader
         setLoading(true);
         //start creating the user
-        await _authController.signupUser(context, _email.text, _password.text);
-        setLoading(false);
+        await _authController.signupUser(context, _email.text, _password.text, _userName.text).then(
+          (value) => {
+            // cleatr the controllers
+            _email.clear(),
+            _userName.clear(),
+            _password.clear,
+
+            //stop the loader
+            setLoading(false)
+          });
       }
     } catch (e) {
       Logger().e(e);
@@ -100,5 +107,94 @@ class AuthProviders extends ChangeNotifier {
   // ------ signout function
   Future<void> logOut () async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  // ------ login user feature
+
+  // email textField controller
+  final TextEditingController _loginEmail = TextEditingController();
+
+  TextEditingController get loginEmail => _loginEmail;
+
+  // passwrod textField controller
+  final TextEditingController _loginPassword = TextEditingController();
+
+  TextEditingController get loginPassword => _loginPassword;
+
+  // validate text input
+ bool validateLoginFields(BuildContext context) {
+    // first checking if all the textfileds are empty or not
+    if (_loginEmail.text.isEmpty || _loginPassword.text.isEmpty) {
+      Logger().w("Please fill all the fields");
+      AlertHelper.showAlert(context, "Validation Error", "Please fill all the fields");
+      return false;
+    }else if (!_loginEmail.text.contains("@")) {
+      Logger().w("Please enter a valid email");
+      AlertHelper.showAlert(context, "Validation Error", "Please enter a valid email");
+      return false;
+    }else if (_loginPassword.text.length < 6) {
+      Logger().w("The passwrod must have more than 6 digits");
+      AlertHelper.showAlert(context, "Validation Error", "The passwrod must have more than 6 digits");
+      return false;
+    }else {
+      Logger().w("All fields are validated");
+      return true;
+    }
+  }
+
+   // start the login process
+  Future<void> startLogin(BuildContext context) async {
+    try {
+      // validating inputs
+      if (validateLoginFields(context)) {
+        // start the loader
+        setLoading(true);
+        //start creating the user
+        await _authController.loginUser(context, _loginEmail.text, _loginPassword.text).then(
+          (value) => {
+            // cleatr the controllers
+            _loginEmail.clear(),
+            _loginPassword.clear(),
+
+            //stop the loader
+            setLoading(false)
+          });
+      }
+    } catch (e) {
+      Logger().e(e);
+      setLoading(false);
+      AlertHelper.showAlert(context, "SignUp error", "Server error");
+    }
+  }
+
+  // reset user password
+
+  // email textField controller
+  final TextEditingController _resetEmail = TextEditingController();
+
+  TextEditingController get resetEmail => _resetEmail;
+
+     // start the login process
+  Future<void> sendPasswordReset(BuildContext context) async {
+    try {
+      // validating inputs
+      if (_resetEmail.text.isNotEmpty) {
+        // start the loader
+        setLoading(true);
+        //start creating the user
+        await _authController.sendEmail(context, _resetEmail.text,).then(
+          (value) => {
+            // cleatr the controllers
+            _resetEmail.clear(),
+
+            //stop the loader
+            setLoading(false)
+          });
+      }
+    } catch (e) {
+      Logger().e(e);
+      setLoading(false);
+      AlertHelper.showAlert(context, "Passwrod Rest Email", "Server error");
+    }
   }
 }

@@ -5,7 +5,9 @@ import 'package:grocery_app/components/custom_back_button.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/components/custom_textfield.dart';
+import 'package:grocery_app/providers/auth_providers.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -48,11 +50,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   fontSize: 14.0,
                 ),
                 const SizedBox(height: 16.0,),
-                const CustomTextField(hintText: "Enter your email here", labelText: "Email"),
+                CustomTextField(
+                  hintText: "Enter your email here", 
+                  labelText: "Email",
+                  controller: Provider.of<AuthProviders>(context).resetEmail,
+                ),
                 const SizedBox(height: 44.0,),
-                CustomButton(
-                  text: "Send",
-                  onTap: () {},
+                Consumer<AuthProviders>(
+                  builder: (context, value, child) {
+                    return CustomButton(
+                      text: "Send",
+                      isLoading: value.isLoading,
+                      onTap: () {
+                        value.sendPasswordReset(context);
+                      },
+                    );
+                  }
                 )
               ],
             ),
