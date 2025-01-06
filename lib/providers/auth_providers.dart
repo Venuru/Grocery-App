@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/controllers/auth_controller.dart';
+import 'package:grocery_app/models/user_model.dart';
 import 'package:grocery_app/screens/auth/signup.dart';
 import 'package:grocery_app/screens/main/main_screen.dart';
 import 'package:grocery_app/utils/helpers/alert_helper.dart';
 import 'package:grocery_app/utils/helpers/helpers.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 class AuthProviders extends ChangeNotifier {
@@ -91,15 +94,19 @@ class AuthProviders extends ChangeNotifier {
   Future<void> initializeUser(BuildContext context) async {
     FirebaseAuth.instance
     .authStateChanges()
-    .listen((User? user) {
+    .listen((User? user) async {
       if (user == null) {
         Logger().w("User is currently signed out!");
         // if the user is null, sent to the signUp
         Helpers.navigateTo(context, const Signup());
       } else {
-        // is the user is not null, sent to the home
-        Logger().w("User is signed in!");
-        Helpers.navigateTo(context, const MainScreen());
+        await startFetchUserData(context, user.uid).then(
+          (value) {
+            // is the user is not null, sent to the home
+            Logger().w("User is signed in!");
+            Helpers.navigateTo(context, const MainScreen());
+          }
+        );
       }
     });
   }
@@ -174,7 +181,7 @@ class AuthProviders extends ChangeNotifier {
 
   TextEditingController get resetEmail => _resetEmail;
 
-     // start the login process
+  // send the password reset
   Future<void> sendPasswordReset(BuildContext context) async {
     try {
       // validating inputs
@@ -197,4 +204,57 @@ class AuthProviders extends ChangeNotifier {
       AlertHelper.showAlert(context, "Passwrod Rest Email", "Server error");
     }
   }
-}
+
+  //------- usermodel object to store user objects
+  UserModel? _userModel;
+  UserModel? get userModel => _userModel;
+
+  //------- start fetch user data
+  Future<void> startFetchUserData(BuildContext context, String uid) async {
+    try {
+      await _authController.fetchUserdata(context, uid).then(
+        (value) {
+          // store the user data
+          if(value != null) {
+            _userModel = value;
+            notifyListeners();
+          }else {
+            AlertHelper.showAlert(context, "User Data Error", "Error fetching user data");
+          }
+        }
+      );
+    }catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  //------ pick, upload and update user profile image
+
+  // image picture object
+  final ImagePicker picker = ImagePicker();
+
+  // file object to store picked file
+  File _image = File("");
+
+  // get picked file
+  File get image => _image;
+
+  // Pick an image function
+  Future<void> pickImage() async {
+    try{
+      final XFile? pickFile = await picker.pickImage(source: ImageSource.camera);
+
+      Logger().w(pickFile?.path);
+
+      // check if the user has picked a file or not
+      if (pickFile != null) {
+        _image = File(pickFile.path);
+        notifyListeners();
+      }else {
+        Logger().w("No image selected");
+      }
+    }catch (e) {
+      Logger().e(e);
+    }
+  }
+} 

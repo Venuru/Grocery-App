@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_app/models/user_model.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/helpers/alert_helper.dart';
 import 'package:logger/logger.dart';
@@ -89,6 +90,30 @@ class AuthController {
       AlertHelper.showAlert(context, 'Passwrod Rest Email', e.code);
     } catch (e) {
       Logger().e(e);
+    }
+  }
+
+  //-------fetch userdata from cloudfirestore
+  Future<UserModel?> fetchUserdata(BuildContext context, String uid) async {
+    try {
+      //-----firebase query that find and fetch user data acording to the uid
+      DocumentSnapshot documentSnapshot = await users
+        .doc(uid)
+        .get();
+        if(documentSnapshot.exists) {
+          Logger().w(documentSnapshot.data());
+
+          // mapping fetched data into a usermodel
+          UserModel userModel = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+
+          return userModel;
+        }else {
+          Logger().e("No data found");
+          return null;
+        }
+    }catch(e) {
+      Logger().e(e.toString());
+      return null;
     }
   }
 }
