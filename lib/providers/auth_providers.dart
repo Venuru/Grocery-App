@@ -240,7 +240,7 @@ class AuthProviders extends ChangeNotifier {
   File get image => _image;
 
   // Pick an image function
-  Future<void> pickImage() async {
+  Future<void> pickImage(BuildContext context) async {
     try{
       final XFile? pickFile = await picker.pickImage(source: ImageSource.camera);
 
@@ -250,6 +250,26 @@ class AuthProviders extends ChangeNotifier {
       if (pickFile != null) {
         _image = File(pickFile.path);
         notifyListeners();
+
+        //start the loader
+        setLoading(true);
+
+        // start uploading the image
+        final imgUrl = await _authController.uploadAndUpdateProfileImage(_image, _userModel!.uid);
+
+        // iF url is not empty, that means the file is uploaded successfully
+        if(imgUrl != "") {
+          // clear the file object
+          _image= File("");
+          // update the user model with the new image url
+          _userModel!.img = imgUrl;
+          notifyListeners();
+
+          //stop the loader
+          setLoading(false);
+        }else{
+          AlertHelper.showAlert(context, "User Image", "Error uploading the image");
+        }
       }else {
         Logger().w("No image selected");
       }

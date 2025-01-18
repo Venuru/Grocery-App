@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_app/controllers/file_upload_controller.dart';
 import 'package:grocery_app/models/user_model.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/helpers/alert_helper.dart';
@@ -114,6 +117,34 @@ class AuthController {
     }catch(e) {
       Logger().e(e.toString());
       return null;
+    }
+  }
+
+  // fileupload controller object
+  final FileUploadController _fileUploadController = FileUploadController();
+
+  //------ upload picked image file to firebase storage and then update the download url in users data
+  Future<String> uploadAndUpdateProfileImage(File file, String uid) async {
+    try {
+      // start uploading
+      final String downloadUrl = await _fileUploadController.uploadFile(file, "UserIMages");
+
+      // check if the donwload url is empty or not
+      if(downloadUrl != "") {
+        // update the image field of the current userdata
+        await users.doc(uid).update(
+          {
+          "img": downloadUrl,
+          }
+        );
+        return downloadUrl;
+      }else{
+        Logger().e("download url is empty");
+        return "";
+      }
+    } catch (e) {
+      Logger().e(e);
+      return "";
     }
   }
 }

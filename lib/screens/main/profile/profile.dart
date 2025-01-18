@@ -35,20 +35,22 @@ class _ProfileState extends State<Profile> {
                         ),
                         const SizedBox(height: 122.0,),
                         InkWell(
-                          onTap: () => value.pickImage(),
+                          onTap: () => value.pickImage(context),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(45.0),
-                            child: value.image.path =="" ? 
-                            Image.network(
+                            child: value.isLoading 
+                            ? const CircularProgressIndicator()
+                            :Image.network(
                                 value.userModel?.img ?? AppAssets.profileUrl,
                                 height: 200.0,
                                 width: 200.0,
                                 fit: BoxFit.cover,
-                            ): Image.file(value.image, 
-                                height: 200.0,
-                                width: 200.0,
-                                fit: BoxFit.cover,
-                            ),
+                            )
+                            // : Image.file(value.image, 
+                            //     height: 200.0,
+                            //     width: 200.0,
+                            //     fit: BoxFit.cover,
+                            // ),
                           ),
                         ),
                         const SizedBox(height: 18.0,),
