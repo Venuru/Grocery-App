@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/providers/auth_providers.dart';
+import 'package:grocery_app/screens/admin/admin.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:grocery_app/utils/helpers/helpers.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -70,6 +72,11 @@ class _ProfileState extends State<Profile> {
                       onTap: () {
                         Provider.of<AuthProviders>(context, listen: false).logOut();
                       }
+                    ),
+                    const SizedBox(height: 20.0,),
+                    CustomButton(
+                      text: "Admin Section", 
+                      onTap: () => Helpers.navigateTo(context, Admin())
                     )
                   ],
                 );

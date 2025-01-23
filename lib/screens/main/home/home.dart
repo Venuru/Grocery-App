@@ -2,11 +2,14 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/components/custom_text.dart';
+import 'package:grocery_app/models/product_model.dart';
+import 'package:grocery_app/providers/product_provider.dart';
 import 'package:grocery_app/screens/main/cart/cart.dart';
 import 'package:grocery_app/screens/main/product_details/product_details.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 import 'package:grocery_app/utils/helpers/helpers.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -72,18 +75,27 @@ class ProductGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: FadeInLeft(
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, 
-            childAspectRatio: 0.75,
-            crossAxisSpacing: 19.0,
-            mainAxisSpacing: 44.0,
-          ),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return const ProductTile();
-          },
-        ),
+        child: Consumer<ProductProvider>(builder : (context, value, child) { 
+          return value.isLoading 
+          ? const Center(child: CircularProgressIndicator())
+          : value.products.isEmpty
+            ? const Center(child: CustomText("No products")) 
+            : GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, 
+                  childAspectRatio: 0.75,
+                  crossAxisSpacing: 19.0,
+                  mainAxisSpacing: 44.0,
+                ),
+                itemCount: value.products.length,
+                itemBuilder: (context, index) {
+                  return ProductTile(
+                    model: value.products[index],
+                  );
+                },
+            );
+          }
+        )
       ),
     );
   }
@@ -92,22 +104,29 @@ class ProductGrid extends StatelessWidget {
 class ProductTile extends StatelessWidget {
   const ProductTile({
     super.key,
+    required this.model,
   });
+
+  final ProductModel model;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        // set selected product model on clicked
+        Provider.of<ProductProvider>(context, listen: false).setProduct = model;
+
+        // navigate to the product details screen
         Helpers.navigateTo(context, const ProductDetails());
       },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.amber,
           borderRadius: BorderRadius.circular(12.0),
-          image: const DecorationImage(
+          image: DecorationImage(
             fit: BoxFit.cover,
             image: NetworkImage(
-              AppAssets.dummyImg
+              model.productImg
             )
           )
         ),
@@ -134,13 +153,13 @@ class ProductTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.0),
                  color: AppColors.lightGreen,
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     width: 65.0,
                     child: CustomText(
-                      "Pumking",
+                      model.productName,
                       fontSize: 15.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
@@ -148,7 +167,7 @@ class ProductTile extends StatelessWidget {
                     ),
                   ),
                   CustomText(
-                    "RS.120.00",
+                    "RS.${model.productPrice}.00",
                     fontSize: 15.0,
                     color: Colors.black,
                     fontWeight: FontWeight.w500,

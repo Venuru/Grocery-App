@@ -27,6 +27,7 @@ class _SignupState extends State<Signup> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 20.0,),
                 FadeInDown(
                   child: const CustomText(
                     'SignUp',

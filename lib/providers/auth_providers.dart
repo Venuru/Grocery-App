@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/controllers/auth_controller.dart';
 import 'package:grocery_app/models/user_model.dart';
+import 'package:grocery_app/providers/product_provider.dart';
 import 'package:grocery_app/screens/auth/signup.dart';
 import 'package:grocery_app/screens/main/main_screen.dart';
 import 'package:grocery_app/utils/helpers/alert_helper.dart';
 import 'package:grocery_app/utils/helpers/helpers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 class AuthProviders extends ChangeNotifier {
 
@@ -52,7 +54,6 @@ class AuthProviders extends ChangeNotifier {
   }
 
   //------ Loader state
-
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -76,7 +77,7 @@ class AuthProviders extends ChangeNotifier {
             // cleatr the controllers
             _email.clear(),
             _userName.clear(),
-            _password.clear,
+            _password.clear(),
 
             //stop the loader
             setLoading(false)
@@ -84,6 +85,7 @@ class AuthProviders extends ChangeNotifier {
       }
     } catch (e) {
       Logger().e(e);
+      
       setLoading(false);
       AlertHelper.showAlert(context, "SignUp error", "Server error");
     }
@@ -102,8 +104,13 @@ class AuthProviders extends ChangeNotifier {
       } else {
         await startFetchUserData(context, user.uid).then(
           (value) {
-            // is the user is not null, sent to the home
+            
             Logger().w("User is signed in!");
+
+            // start fetch product list
+            Provider.of<ProductProvider>(context, listen: false).startFetchProductList();
+
+            // is the user is not null, sent to the home
             Helpers.navigateTo(context, const MainScreen());
           }
         );
