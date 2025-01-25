@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/models/product_model.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/product_provider.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,9 @@ class RelatedItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        // clear the cart counter
+        Provider.of<CartProvider>(context, listen: false).clearAmount();
+        
         Provider.of<ProductProvider>(context, listen: false).setProduct = model;
       },
       child: Container(

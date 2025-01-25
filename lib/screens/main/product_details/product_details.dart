@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/components/cart_button.dart';
 import 'package:grocery_app/components/custom_back_button.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/product_provider.dart';
 import 'package:grocery_app/screens/main/product_details/widgets/related_item_tile.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
@@ -31,12 +33,23 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 50.0),
-                child: CustomButton(
-                  text: "Add to cart", 
-                  onTap: () {}
-                ),
+              child: Row(
+                children: [
+                  const CartButton(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 50.0),
+                    child: Consumer<ProductProvider>(
+                      builder: (context, value, child) {
+                        return CustomButton(
+                          text: "Add to cart", 
+                          onTap: () {
+                            Provider.of<CartProvider>(context, listen: false).addToCart(value.productModel, context);
+                          }
+                        );
+                      },
+                    )
+                  ),
+                ],
               )
             ),
           ],
@@ -146,24 +159,28 @@ class CounterSection extends StatelessWidget {
         ),
         borderRadius: const BorderRadius.all(Radius.circular(12.0)),
       ),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () {}, 
-            icon: const Icon(Icons.add)
-          ),
-          const SizedBox(width: 8.0,),
-          const CustomText(
-            "1",
-            fontSize: 14.0,  
-            fontWeight: FontWeight.w600,
-          ),
-          const SizedBox(width: 8.0,),
-          IconButton(
-            onPressed: () {}, 
-            icon: const Icon(Icons.remove)
-          ),
-        ],
+      child: Consumer<CartProvider>(
+        builder: (context, value, child) {
+          return Row(
+            children: [
+              IconButton(
+                onPressed: () => value.increaseCounter(), 
+                icon: const Icon(Icons.add)
+              ),
+              const SizedBox(width: 8.0,),
+              CustomText(
+                "${value.counter}",
+                fontSize: 14.0,  
+                fontWeight: FontWeight.w600,
+              ),
+              const SizedBox(width: 8.0,),
+              IconButton(
+                onPressed: () => value.decreaseCounter(), 
+                icon: const Icon(Icons.remove)
+              ),
+            ],
+          );
+        },
       ),
     );
   }

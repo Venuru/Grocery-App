@@ -1,10 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grocery_app/components/cart_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/models/product_model.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/product_provider.dart';
-import 'package:grocery_app/screens/main/cart/cart.dart';
 import 'package:grocery_app/screens/main/product_details/product_details.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
@@ -35,16 +36,7 @@ class _HomeState extends State<Home> {
                       "menu-icon.svg"
                     )
                   ),
-                  InkWell(
-                    onTap: () {
-                      Helpers.navigateTo(context, const Cart());
-                    },
-                    child: SvgPicture.asset(
-                      AppAssets.getIconName(
-                        "cart-icon.svg"
-                      )
-                    ),
-                  ),
+                  const CartButton()
                 ],
               ),
               const SizedBox(height: 25.0),
@@ -115,6 +107,9 @@ class ProductTile extends StatelessWidget {
       onTap: () {
         // set selected product model on clicked
         Provider.of<ProductProvider>(context, listen: false).setProduct = model;
+
+        // clear the cart counter
+        Provider.of<CartProvider>(context, listen: false).clearAmount();
 
         // navigate to the product details screen
         Helpers.navigateTo(context, const ProductDetails());
