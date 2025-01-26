@@ -81,4 +81,68 @@ class CartProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // calculate and get total cart item count
+  int get getCartTotalItemCount {
+    int temp = 0;
+
+    // reading the cart item list and get the sum of amount values as the cart item count
+    for (var i=0; i < _cartItems.length; i++) {
+        temp += cartItems[i].productAmount;
+    }
+    return temp;
+  }
+
+  // calculate and get total price
+  double get getCartTotalPrice {
+    double temp = 0;
+
+    // reading the cart item list and get the sum of subtotal values as the cart item total price
+    for (var i=0; i < _cartItems.length; i++) {
+        temp += cartItems[i].subTotal;
+    }
+    return temp;
+  }
+
+  // Increase the cart item amount
+  void increaseCartItemAmount(String cartId) {
+    // find the existing cart product item
+    var temp = _cartItems.singleWhere((e) => e.id == cartId);
+
+    // update the amount
+    temp.productAmount ++;
+
+    // calcualte the subtotal acording to the new amount
+    temp.subTotal = temp.productAmount * double.parse(temp.productModel.productPrice);
+
+    notifyListeners();
+  }
+
+  // decrease the cart item amount
+  void decreaseCartItemAmount(String cartId) {
+    // find the existing cart product item
+    var temp = _cartItems.singleWhere((e) => e.id == cartId);
+
+    // check whether amount is 1
+    if (temp.productAmount == 1) {
+      // if the amount is 1, remove the item from the cart
+      removeCartItem(cartId);
+    }else {
+      // update the amount
+      temp.productAmount --;
+
+      // calcualte the subtotal acording to the new amount
+      temp.subTotal = temp.productAmount * double.parse(temp.productModel.productPrice);
+
+      notifyListeners();
+    }
+  }
+
+  // remove the cart item by id
+  void removeCartItem(String cartId) {
+    // find the existing cart product item
+    var temp = _cartItems.removeWhere((e) => e.id == cartId);
+
+    notifyListeners();
+  }
 }

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/components/custom_text.dart';
-import 'package:grocery_app/utils/constants/app_assets.dart';
+import 'package:grocery_app/models/cart_item_model.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class CartTile extends StatelessWidget {
   const CartTile({
     super.key,
+    required this.cartItemModel
   });
+
+  final CartItemModel cartItemModel;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class CartTile extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(15.0),
             child: Image.network(
-              AppAssets.dummyImg,
+              cartItemModel.productModel.productImg,
               width: 70.0,
               height: 70.0,
               fit: BoxFit.fill,
@@ -40,8 +45,8 @@ class CartTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              const CustomText(
-                "Grapes",
+              CustomText(
+                cartItemModel.productModel.productName,
                 fontSize: 14.0,
               ),
               Container(
@@ -59,16 +64,20 @@ class CartTile extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () {}, 
+                      onPressed: () {
+                        Provider.of<CartProvider>(context, listen: false).increaseCartItemAmount(cartItemModel.id);
+                      }, 
                       icon: const Icon(Icons.add)
                     ),
-                    const CustomText(
-                      "1",
+                    CustomText(
+                      cartItemModel.productAmount.toString(),
                       fontSize: 14.0,  
                       fontWeight: FontWeight.w600,
                     ),
                     IconButton(
-                      onPressed: () {}, 
+                      onPressed: () {
+                        Provider.of<CartProvider>(context, listen: false).decreaseCartItemAmount(cartItemModel.id);
+                      }, 
                       icon: const Icon(Icons.remove)
                     ),
                   ],
@@ -82,7 +91,7 @@ class CartTile extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-              
+                  Provider.of<CartProvider>(context, listen: false).removeCartItem(cartItemModel.id);
                 },
                 child: const Icon(
                   Icons.close,
@@ -90,8 +99,8 @@ class CartTile extends StatelessWidget {
                   size: 18,
                 ),
               ),
-              const CustomText(
-                "152.00",
+              CustomText(
+                "Rs. ${cartItemModel.subTotal}",
                 fontSize: 15.0,
                 fontWeight: FontWeight.w600,
               )
