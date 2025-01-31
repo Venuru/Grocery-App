@@ -1,20 +1,16 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/components/app_logo.dart';
 import 'package:grocery_app/components/custom_back_button.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/components/custom_textfield.dart';
-import 'package:grocery_app/providers/auth_providers.dart';
+import 'package:grocery_app/providers/auth/auth_providers.dart';
 import 'package:grocery_app/screens/auth/forgot_password.dart';
-import 'package:grocery_app/screens/main/main_screen.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
-import 'package:grocery_app/utils/helpers/alert_helper.dart';
 import 'package:grocery_app/utils/helpers/helpers.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {

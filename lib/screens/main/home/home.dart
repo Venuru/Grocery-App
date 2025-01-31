@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/components/cart_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/models/product_model.dart';
-import 'package:grocery_app/providers/cart_provider.dart';
-import 'package:grocery_app/providers/product_provider.dart';
+import 'package:grocery_app/providers/home/cart_provider.dart';
+import 'package:grocery_app/providers/home/product_provider.dart';
 import 'package:grocery_app/screens/main/product_details/product_details.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
@@ -82,7 +82,7 @@ class ProductGrid extends StatelessWidget {
                 itemCount: value.products.length,
                 itemBuilder: (context, index) {
                   return ProductTile(
-                    model: value.products[index],
+                    productModel: value.products[index],
                   );
                 },
             );
@@ -96,17 +96,17 @@ class ProductGrid extends StatelessWidget {
 class ProductTile extends StatelessWidget {
   const ProductTile({
     super.key,
-    required this.model,
+    required this.productModel,
   });
 
-  final ProductModel model;
+  final ProductModel productModel;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         // set selected product model on clicked
-        Provider.of<ProductProvider>(context, listen: false).setProduct = model;
+        Provider.of<ProductProvider>(context, listen: false).setProduct = productModel;
 
         // clear the cart counter
         Provider.of<CartProvider>(context, listen: false).clearAmount();
@@ -121,7 +121,7 @@ class ProductTile extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.cover,
             image: NetworkImage(
-              model.productImg
+              productModel.productImg
             )
           )
         ),
@@ -136,9 +136,21 @@ class ProductTile extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Colors.white
               ),
-              child: const Icon(
-                Icons.favorite_border,
-                color: AppColors.ash,
+              child: Consumer<ProductProvider>(
+                builder: (context, value, child) {
+                  return InkWell(
+                    onTap: () => value.addToFav(productModel, context),
+                    child: value.favProducts.contains(productModel) 
+                    ? const Icon(
+                      Icons.favorite,
+                      color: AppColors.orange,
+                    )
+                    : const Icon(
+                      Icons.favorite_border,
+                      color: AppColors.ash,
+                    ),
+                  );
+                },
               ),
             ),
             Container(
@@ -154,7 +166,7 @@ class ProductTile extends StatelessWidget {
                   SizedBox(
                     width: 65.0,
                     child: CustomText(
-                      model.productName,
+                      productModel.productName,
                       fontSize: 15.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
@@ -162,7 +174,7 @@ class ProductTile extends StatelessWidget {
                     ),
                   ),
                   CustomText(
-                    "RS.${model.productPrice}.00",
+                    "RS.${productModel.productPrice}.00",
                     fontSize: 15.0,
                     color: Colors.black,
                     fontWeight: FontWeight.w500,

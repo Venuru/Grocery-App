@@ -5,7 +5,7 @@ import 'package:grocery_app/components/custom_back_button.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/components/custom_textfield.dart';
-import 'package:grocery_app/providers/auth_providers.dart';
+import 'package:grocery_app/providers/auth/auth_providers.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 import 'package:provider/provider.dart';
 

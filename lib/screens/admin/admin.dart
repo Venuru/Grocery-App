@@ -1,13 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/components/app_logo.dart';
 import 'package:grocery_app/components/custom_back_button.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/components/custom_textfield.dart';
-import 'package:grocery_app/providers/admin_provider.dart';
-import 'package:grocery_app/providers/auth_providers.dart';
-import 'package:grocery_app/screens/auth/login.dart';
+import 'package:grocery_app/providers/admin/admin_provider.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 import 'package:provider/provider.dart';
 

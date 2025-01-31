@@ -1,6 +1,8 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/controllers/admin_controller.dart';
 import 'package:grocery_app/models/product_model.dart';
+import 'package:grocery_app/utils/helpers/alert_helper.dart';
 import 'package:logger/logger.dart';
 
 class ProductProvider extends ChangeNotifier {
@@ -69,5 +71,33 @@ class ProductProvider extends ChangeNotifier {
       }
     }
     return temp;
+  }
+
+  // add to favourites
+
+  // to store favourite products
+  List<ProductModel> _favProducts = [];
+
+  // get favoutite products
+  List<ProductModel> get favProducts => _favProducts;
+
+  // add to fav method
+  void addToFav(ProductModel productModel, BuildContext context) {
+
+    //first check whether this product is already in the fav list
+    if (_favProducts.contains(productModel)) { 
+      // if exists remove that product from the list
+      _favProducts.remove(productModel);
+      
+      AlertHelper.showSnackBar(context, 'Removed from Favourites', type: AnimatedSnackBarType.info);
+      notifyListeners();
+
+    }else {
+      _favProducts.add(productModel);
+
+      // show snackbar
+      AlertHelper.showSnackBar(context, 'Added to Favourites', type: AnimatedSnackBarType.success);
+      notifyListeners();
+    }
   }
 }

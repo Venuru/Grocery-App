@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/components/custom_back_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
-import 'package:grocery_app/providers/cart_provider.dart';
+import 'package:grocery_app/providers/home/cart_provider.dart';
 import 'package:grocery_app/screens/main/cart/widgets/bottom_section.dart';
 import 'package:grocery_app/screens/main/cart/widgets/cart_tile.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
