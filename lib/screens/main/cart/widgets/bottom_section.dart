@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/components/custom_button.dart';
 import 'package:grocery_app/components/custom_text.dart';
 import 'package:grocery_app/providers/home/cart_provider.dart';
+import 'package:grocery_app/providers/home/order_provider.dart';
 import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 import 'package:provider/provider.dart';
@@ -16,14 +17,14 @@ class BottomSection extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         height: 300,
-        child: Consumer<CartProvider>(
-          builder: (context, value, child) {
+        child: Consumer2<CartProvider, OrderProvider>(
+          builder: (context, cart, order, child) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CartAmountRow(
                   name: "Item total",
-                  amount: value.getCartTotalItemCount.toString(),
+                  amount: cart.getCartTotalItemCount.toString(),
                 ),
                 const SizedBox(
                   height: 12.0,
@@ -44,7 +45,7 @@ class BottomSection extends StatelessWidget {
                 ),
                 CartAmountRow(
                   name: "Total",
-                  amount: "Rs. ${value.getCartTotalPrice}0",
+                  amount: "Rs. ${cart.getCartTotalPrice}0",
                   fontSize: 18.0,
                   fontWeight: true,
                 ),
@@ -53,13 +54,9 @@ class BottomSection extends StatelessWidget {
                 ),
                 CustomButton(
                     text: "Place Order",
+                    isLoading: order.isLoading,
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const DialogBoxContainer();
-                        },
-                      );
+                      order.startCreateOrder(context);
                     })
               ],
             );

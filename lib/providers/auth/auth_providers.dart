@@ -214,6 +214,8 @@ class AuthProviders extends ChangeNotifier {
 
   //------- usermodel object to store user objects
   UserModel? _userModel;
+
+  // get the user model
   UserModel? get userModel => _userModel;
 
   //------- start fetch user data

@@ -18,7 +18,7 @@ class AdminController {
     final String downloadUrl = await _fileUploadController.uploadFile(file, "productImages");
 
     if(downloadUrl != "") {
-      // getting a unique id
+    // getting a unique id
     String id = products.doc().id;
 
     // Call the prodcuts's CollectionReference to add a new prodcuts

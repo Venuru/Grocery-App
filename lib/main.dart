@@ -4,6 +4,7 @@ import 'package:grocery_app/firebase_options.dart';
 import 'package:grocery_app/providers/admin/admin_provider.dart';
 import 'package:grocery_app/providers/auth/auth_providers.dart';
 import 'package:grocery_app/providers/home/cart_provider.dart';
+import 'package:grocery_app/providers/home/order_provider.dart';
 import 'package:grocery_app/providers/home/product_provider.dart';
 import 'package:grocery_app/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => AdminProvider()),
       ChangeNotifierProvider(create: (context) => ProductProvider()),
       ChangeNotifierProvider(create: (context) => CartProvider()),
+      ChangeNotifierProvider(create: (context) => OrderProvider()),
     ],
     child: const MyApp(),)
   );
