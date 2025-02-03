@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/controllers/auth_controller.dart';
 import 'package:grocery_app/models/user_model.dart';
+import 'package:grocery_app/providers/home/order_provider.dart';
 import 'package:grocery_app/providers/home/product_provider.dart';
 import 'package:grocery_app/screens/auth/signup.dart';
 import 'package:grocery_app/screens/main/main_screen.dart';
@@ -107,8 +108,11 @@ class AuthProviders extends ChangeNotifier {
             
             Logger().w("User is signed in!");
 
-            // start fetch product list
+            // start fetching product list
             Provider.of<ProductProvider>(context, listen: false).startFetchProductList();
+            
+            // start fetching order list
+            Provider.of<OrderProvider>(context, listen: false).startGetOrder(context);
 
             // is the user is not null, sent to the home
             Helpers.navigateTo(context, const MainScreen());

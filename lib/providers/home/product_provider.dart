@@ -25,7 +25,7 @@ class ProductProvider extends ChangeNotifier {
   
   List<ProductModel> get products => _products;
 
-  //------- start fetch user data
+  //------- start fetch product data
   Future<void> startFetchProductList() async {
     try {
       // start the loader

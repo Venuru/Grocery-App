@@ -3,7 +3,6 @@ import 'package:grocery_app/screens/main/Profile/profile.dart';
 import 'package:grocery_app/screens/main/favourites/favourites.dart';
 import 'package:grocery_app/screens/main/home/home.dart';
 import 'package:grocery_app/screens/main/orders/orders.dart';
-import 'package:grocery_app/utils/constants/app_assets.dart';
 import 'package:grocery_app/utils/constants/app_colors.dart';
 
 class MainScreen extends StatefulWidget {

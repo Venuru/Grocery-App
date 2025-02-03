@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/controllers/order_controller.dart';
 import 'package:grocery_app/models/cart_item_model.dart';
+import 'package:grocery_app/models/orders_model.dart';
 import 'package:grocery_app/models/user_model.dart';
 import 'package:grocery_app/providers/auth/auth_providers.dart';
 import 'package:grocery_app/providers/home/cart_provider.dart';
@@ -72,6 +73,48 @@ class OrderProvider extends ChangeNotifier {
       // stop thh loader
       setLoading(false);
       Logger().e(e);
+    }
+  }
+
+  // fetch created Orders
+
+  //------ creating order Loader state
+  final bool _isFetchingOrders = false;
+
+  bool get isFetchingOrders => _isLoading;
+
+  //----- set Loader state
+  void setIsFetchingOrders(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  //-------store orider list
+  List<OrderModel> _orders = [];
+  
+  List<OrderModel> get orders => _orders;
+
+  //------- start fetch order data
+  Future<void> startGetOrder(BuildContext context) async {
+    try {
+      // get userModel
+      UserModel userModel = Provider.of<AuthProviders>(context, listen: false).userModel!;
+
+      // start the loader
+      setIsFetchingOrders(true);
+      await OrderController().fetchOrderList(userModel.uid).then(
+        (value) {
+          _orders = value;
+          notifyListeners();
+
+          // stop the loader
+          setIsFetchingOrders(false);
+        }
+      );
+    }catch (e) {
+      Logger().e(e);
+      // stop the loader
+      setIsFetchingOrders(false);
     }
   }
 }
